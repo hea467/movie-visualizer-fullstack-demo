@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Table } from 'antd'; // Import Ant Design Table
 
 const MovieList = () => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:5000/movies') // Flask API URL
+        axios.get('http://127.0.0.1:5000/movies')
             .then(response => {
                 setMovies(response.data);
                 setLoading(false);
@@ -19,32 +21,39 @@ const MovieList = () => {
             });
     }, []);
 
+    const filteredMovies = movies.filter(movie =>
+        movie.title_year.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        movie.directors.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        movie.genre.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // Ant Design table
+    const columns = [
+        { title: 'Title & Year', dataIndex: 'title_year', key: 'title_year' },
+        { title: 'Directors', dataIndex: 'directors', key: 'directors' },
+        { title: 'Genre', dataIndex: 'genre', key: 'genre' },
+        { title: 'Production Company', dataIndex: 'production_company', key: 'production_company' }
+    ];
+
     if (loading) return <p>Loading movies...</p>;
     if (error) return <p>{error}</p>;
 
     return (
-        <div>
-            <h1>AFI Top 100 Movies</h1>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Title & Year</th>
-                        <th>Directors</th>
-                        <th>Genre</th>
-                        <th>Production Company</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {movies.map((movie, index) => (
-                        <tr key={index}>
-                            <td>{movie.title_year}</td>
-                            <td>{movie.directors}</td>
-                            <td>{movie.genre}</td>
-                            <td>{movie.production_company}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div style={{ margin: '20px', padding: '20px' }}>
+            <h1 style={{ textAlign: 'center' }}>🎬 AFI Top 100 Movies</h1>
+            <input
+                type="text"
+                placeholder="Search by title, director, or genre..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                style={{ marginBottom: '20px', padding: '10px', width: '100%' }}
+            />
+            <Table
+                columns={columns}
+                dataSource={filteredMovies}
+                rowKey="title_year"
+                pagination={{ pageSize: 10 }} // Paginate results
+            />
         </div>
     );
 };

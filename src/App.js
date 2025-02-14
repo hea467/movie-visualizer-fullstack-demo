@@ -24,13 +24,31 @@
 
 // export default App;
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Layout } from 'antd';
 import MovieList from './MovieList';
+import MovieChart from './MovieChart';
+import Sidebar from './Sidebar';
+import MovieYearPieChart from './MovieYearPieChart';
+
+const { Content } = Layout;
 
 function App() {
   return (
-    <div>
-      <MovieList />
-    </div>
+    <Router>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sidebar />
+        <Layout style={{ marginLeft: 200, padding: '20px' }}> {/* Adds spacing for sidebar */}
+          <Content>
+            <Routes>
+              <Route path="/" element={<MovieList />} />
+              <Route path="/pie-chart" element={<MovieYearPieChart />} />
+              <Route path="/movie-chart" element={<MovieChart />} />
+            </Routes>
+          </Content>
+        </Layout>
+      </Layout>
+    </Router>
   );
 }
 
