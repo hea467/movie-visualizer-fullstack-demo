@@ -1,27 +1,47 @@
 import React from 'react';
-import { Layout, Menu } from 'antd';
-import { BarChartOutlined, PieChartOutlined, TableOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Layout, Menu, Button } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
 
 const { Sider } = Layout;
 
-const Sidebar = () => {
+const Sidebar = ({ user, setUser }) => {
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await fetch("http://127.0.0.1:5000/logout", { method: "POST", credentials: "include" });
+            setUser(null); // Clear user state
+            navigate('/login'); // Redirect to login page
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
+    };
+
     return (
-        <Sider style={{ height: '100vh', position: 'fixed', left: 0 }}>
-            <div className="logo" style={{ color: 'white', textAlign: 'center', padding: '20px', fontSize: '18px' }}>
-                🎬 Movie Dashboard
-            </div>
-            <Menu theme="dark" mode="vertical" defaultSelectedKeys={['1']}>
-                <Menu.Item key="1" icon={<TableOutlined />}>
-                    <Link to="/">Movie List</Link>
+        <Sider width={200} style={{ background: '#fff', padding: '20px' }}>
+            <Menu mode="vertical">
+                <Menu.Item key="1">
+                    <Link to="/">🎬 Movie List</Link>
                 </Menu.Item>
-                <Menu.Item key="2" icon={<PieChartOutlined />}>
-                    <Link to="/pie-chart">Movies by Year (Pie Chart)</Link>
+                <Menu.Item key="2">
+                    <Link to="/pie-chart">📊 Pie Chart</Link>
                 </Menu.Item>
-                <Menu.Item key="3" icon={<BarChartOutlined />}>
-                    <Link to="/movie-chart">Top Directors (Bar Chart)</Link>
+                <Menu.Item key="3">
+                    <Link to="/movie-chart">📈 Genre Bar Chart</Link>
                 </Menu.Item>
             </Menu>
+            <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                {user ? (
+                    <>
+                        <p>Welcome, {user}!</p>
+                        <Button type="primary" onClick={handleLogout}>Logout</Button>
+                    </>
+                ) : (
+                    <Button type="default">
+                        <Link to="/login">Login</Link>
+                    </Button>
+                )}
+            </div>
         </Sider>
     );
 };
