@@ -6,7 +6,7 @@ const MovieChart = () => {
     const [chartData, setChartData] = useState([]);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:5000/movies')
+        axios.get('https://movie-api-0kqk.onrender.com/movies')
             .then(response => {
                 // Count the number of movies per genre
                 const genreCounts = {};

@@ -15,10 +15,10 @@ const Login = ({ setUser }) => {
 
     const handleLogin = async (values) => {
         try {
-            const response = await axios.post('http://127.0.0.1:5000/login', values, { withCredentials: true });
+            const response = await axios.post('https://movie-api-0kqk.onrender.com/login', values, { withCredentials: true });
             setMessage(response.data.message);
             setUser(values.username);
-            navigate(fromPage); // ✅ Redirect back to where user left off
+            navigate(fromPage);
         } catch (error) {
             setMessage(error.response?.data?.message || 'Login failed');
         }

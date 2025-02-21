@@ -11,7 +11,7 @@ const Register = () => {
 
     const handleRegister = async (values) => {
         try {
-            const response = await axios.post('http://127.0.0.1:5000/register', values);
+            const response = await axios.post('https://movie-api-0kqk.onrender.com/register', values);
             setMessage(response.data.message);
             navigate('/login'); // ✅ Redirect to login after successful registration
         } catch (error) {

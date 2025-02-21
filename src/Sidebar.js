@@ -9,7 +9,7 @@ const Sidebar = ({ user, setUser }) => {
 
     const handleLogout = async () => {
         try {
-            await fetch("http://127.0.0.1:5000/logout", { method: "POST", credentials: "include" });
+            await fetch("https://movie-api-0kqk.onrender.com/logout", { method: "POST", credentials: "include" });
             setUser(null); // Clear user state
             navigate('/login'); // Redirect to login page
         } catch (error) {

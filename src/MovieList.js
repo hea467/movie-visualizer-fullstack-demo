@@ -9,7 +9,7 @@ const MovieList = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:5000/movies')
+        axios.get('https://movie-api-0kqk.onrender.com/movies')
             .then(response => {
                 setMovies(response.data);
                 setLoading(false);
