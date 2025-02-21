@@ -1,3 +1,4 @@
+Fullstack demonstration project, built SQL database with web-scraped data (database hosted using Railway), React and javscript front end, and backend implemented using Flask. 
 https://movie-visualizer.vercel.app/
 
 # Getting Started with Create React App
